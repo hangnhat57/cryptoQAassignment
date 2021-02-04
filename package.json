@@ -1,0 +1,24 @@
+{
+  "name": "task1",
+  "version": "1.0.0",
+  "description": "api test for HKO OPEN DATA",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha testRunner.js --timeout 0 --reporter mochawesome"
+  },
+  "author": "Nathan Nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "await-spawn": "^4.0.1",
+    "chai": "^4.2.0",
+    "http-proxy": "^1.18.1",
+    "jsonschema": "^1.4.0",
+    "mocha": "^8.2.1",
+    "supertest": "^6.1.3"
+  },
+  "devDependencies": {
+    "mocha-simple-html-reporter": "^1.1.0",
+    "mochawesome": "^6.2.1"
+  }
+}
