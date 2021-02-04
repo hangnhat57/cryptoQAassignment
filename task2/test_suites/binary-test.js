@@ -22,40 +22,37 @@ function testStep(caseName, code, delay, expect) {
     it(caseName, async () => {
 
         // Start Proxy server in background
-        let proxy = spawn("node", [proxyPath, "&"],
+        spawn("node", [proxyPath,"&"],
             {
                 env: { ...process.env, CODE: code, DELAY: delay * seconds },
                 encoding: 'utf-8',
                 detached: true
             })
 
-        proxy.stdout.on('data', data => {
-            // start execute binary file through http proxy
-            var binaryExecute = spawnSync(binaryPath, {
-                timeout: 20 * seconds,
-                encoding: 'utf-8',
-                env: { ...process.env, http_proxy: "127.0.0.1:5050" }
-            });
-            chai.expect(binaryExecute.error).undefined
-            switch (expect) {
-                case timeoutMessage:
-                    chai.expect(binaryExecute.stderr.toString()).include(expect)
-                    break;
-                case successMessage:
-                    chai.expect(binaryExecute.stdout.toString()).include(expect)
-                    break;
-                default:
-                    chai.expect(binaryExecute.stdout.toString()).include(code)
-                    break;
-            }
-        })
 
         // sleep for few second to wait for proxy server run
-        // await sleep(3 * seconds)
-
-
-
-
+        await sleep(3 * seconds)
+        
+        // start execute binary file through http proxy
+        var binaryExecute =  spawnSync(binaryPath, {
+            timeout:20*seconds,
+            encoding: 'utf-8',
+            env: { ...process.env, http_proxy: "127.0.0.1:5050" }
+        });
+        chai.expect(binaryExecute.error).undefined
+        switch (expect) {
+            case timeoutMessage:
+                chai.expect(binaryExecute.stderr.toString()).include(expect)
+                break;
+            case successMessage:
+                chai.expect(binaryExecute.stdout.toString()).include(expect)
+                break;
+            default:
+                chai.expect(binaryExecute.stdout.toString()).include(code)
+                break;
+        }
+       
+       
     })
 }
 
